@@ -1,0 +1,5 @@
+9 JUNE 2020
+- wrote the index.js file containing the middlewares
+- connected to the local mongo db and made sure that db is connected before starting the server
+  (but need to find better way to do this)
+
