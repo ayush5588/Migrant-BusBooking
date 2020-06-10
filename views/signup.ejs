@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-08">
+        <title>SignUp</title>
+    </head>
+    <body>
+        <h1>Welcome to SignUp Page</h1>
+        <form action="/user/signup" method="POST">
+            <input type="text" name="aadharUid" value="Aadhar Number"><br>
+            <input type="number" name="totalPassengers" value="Total Passengers"><br>
+            <input type="text" name="membersAadhar" value="Aadhar Number of passenger"><br>
+            <input type="password" name="password" value="Password"><br>
+            <input type="submit" value="Submit">
+        </form>
+        <%if(locals.message){%>
+            <div class="alert alert-success" role="alert">
+                <%=message.info%>
+            </div>
+            <%=removeMessage();%>
+        <%}%>
+    </body>
+</html>

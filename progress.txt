@@ -3,3 +3,10 @@
 - connected to the local mongo db and made sure that db is connected before starting the server
   (but need to find better way to do this)
 
+10 JUNE 2020
+- completed the signup api for the migrant
+- 30% login api done
+
+11 JUNE 2020
+- completed the login api for the migrant
+- included a middleware session checker for login

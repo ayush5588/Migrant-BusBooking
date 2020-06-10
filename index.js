@@ -12,6 +12,7 @@ const SessionStore = new session.MemoryStore;
 app.use(session({
     cookie: {maxAge: 60000},
     saveUninitialized: true,
+    key:'user_key',
     secret: process.env.SESSION_SECRET,
     store: SessionStore,
     resave: true
@@ -30,7 +31,23 @@ app.use((req,res,next)=>{  // for removing the flash message after displaying it
     next();
 });
 
+app.use((req,res,next)=>{  // for cases when the cookie remains in the user browser even if the user logged out
+    if(req.cookies.user_key && !req.session.user){
+        res.clearCookie('user_key');
+    }
+    next();
+});
 
+//Routes
+
+const user_auth = require('./src/user/login-signup/index');
+app.use('/user',user_auth);
+
+app.get('/',(req,res)=>{
+    res.render('home');
+});
+
+// server and db connection
 const PORT = process.env.PORT || 8080;
 const url = process.env.DB_URL;
 mongoose.connect(url,{useUnifiedTopology: true,useNewUrlParser: true,useFindAndModify: false},(e)=>{
