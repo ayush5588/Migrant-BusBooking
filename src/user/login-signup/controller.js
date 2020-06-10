@@ -7,19 +7,16 @@ const session = require('express-session');
 
 const migrantSchema = require('../migrant/schema');
 const adminSchema = require('../admin/schema');
+const userSchema = require('./schema');
 
 // signup only for migrants 
 exports.signup = (req,res)=>{
     const uid = shortid.generate();
     const aadharUid = sanitize(req.body.aadharUid,{allowedAttributes:{},allowedTags: []});
-    const totalPassengers = req.body.totalPassengers;
-    const passengersAadhar = req.body.membersAadhar;
     const password = sanitize(req.body.password,{allowedAttributes:{},allowedTags: []});
-    const aadharArray = [];
-    aadharArray.push(passengersAadhar);
 
     if(aadharUid && password){  
-        migrantSchema.findOne({aadharUid: aadharUid}).then((data)=>{
+        userSchema.findOne({aadharUid: aadharUid}).then((data)=>{
             if(data){
                 // User already exists
                 req.flash('info','User already exists');
@@ -27,14 +24,13 @@ exports.signup = (req,res)=>{
                 res.render('signup');
             }else{
                 bcrypt.hash(password,saltRounds).then((hashedPassword)=>{
-                    const migrant = new migrantSchema({
+                    const user = new userSchema({
                         uid: uid,
                         aadharUid: aadharUid,
                         password: hashedPassword,
-                        totalPassengers: totalPassengers,
-                        passengersAadhar: aadharArray
+                        status: 'Migrant'
                     });
-                    migrant.save().then(()=>{
+                    user.save().then(()=>{
                         console.log('User successfully signed up');
                         req.flash('info','User successfully signed up');
                         res.locals.message = req.flash();
@@ -77,14 +73,32 @@ exports.signup = (req,res)=>{
 exports.login = (req,res)=>{
     const aadharId = req.body.aadharId;
     const password = req.body.password;
-    migrantSchema.findOne({aadharId: aadharId}).then((data)=>{
+    const status = req.body.status;
+    userSchema.findOne({aadharUid: aadharId}).then((data)=>{
         if(data){
             const hashedPassword = data.password;
             bcrypt.compare(password,hashedPassword).then((result)=>{
                 if(result == true){
-                    req.session.user = data.uid;
-                    console.log('User logged in');
-                    res.redirect('/user/dashboard');
+                    if(data.status == status){
+                        if(status == 'Admin'){
+                            // Admin
+                            req.session.user = data.uid;
+                            console.log('User logged in');
+                            res.render('adminDataView');
+                        }else{
+                            // Migrant
+                            req.session.user = data.uid;
+                            console.log('User logged in');
+                            res.render('busBooking');
+                        }
+                    }else{
+                        console.log('Not Authorized');
+                        req.flash('info','Not Authorized');
+                        res.locals.message = req.flash();
+                        res.render('login');
+                    }
+                    
+                    //res.redirect('/user/dashboard');
                 }else{
                     console.log('Incorrect Password');
                     req.flash('info','Incorrect Password');
@@ -100,7 +114,7 @@ exports.login = (req,res)=>{
         }else{
             console.log('User does not exist');
             req.flash('info','User does not exist');
-            res.locals.message = req.flash;
+            res.locals.message = req.flash();
             res.render('login');
         }
     }).catch((e)=>{
@@ -122,7 +136,9 @@ exports.session_Checker = (req,res,next)=>{
 exports.logout = (req,res)=>{
     if(req.session.user && req.cookies.user_key){
         res.clearCookie('user_key');
-        res.redirect('/');
+        req.flash('info','You have been logged out');
+        res.locals.message = req.flash();
+        res.render('login');
     }else{
         res.redirect('/login');
     }

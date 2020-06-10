@@ -6,5 +6,20 @@
     </head>
     <body>
         <h1>Welcome to Login Page</h1>
+        <form action="/user/login" method="POST">
+            <input type="text" name="aadharId" value="Aadhar Number"><br>
+            <input type="password" name="password" value="Password"><br>
+            <select name="status" id="status">
+                <option value="Admin">Admin</option>
+                <option value="Migrant">Migrant</option>
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+        <%if(locals.message){%>
+            <div class="alert alert-success" role="alert">
+                <%=message.info%>
+            </div>
+            <%=removeMessage();%>
+        <%}%>
     </body>
 </html>
