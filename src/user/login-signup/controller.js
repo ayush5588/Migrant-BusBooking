@@ -136,7 +136,7 @@ exports.session_Checker = (req,res,next)=>{
 
 exports.logout = (req,res)=>{
     req.session.loggedIn = false;
-    req.session.destroy();
-    res.clearCookie('user_key');
-    res.redirect('/');
+    req.session.destroy(); // destroying the session
+    res.clearCookie('user_key');  // clearing the cookie from the client browser
+    res.redirect('/');  // redirecting the user to home page
 }
