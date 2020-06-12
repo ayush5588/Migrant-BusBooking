@@ -11,3 +11,8 @@
 - completed the login api for the migrant and admin
 - included a middleware session checker for login which checks if the session is still active and if not whether the cookie from the   
   clients browser has been deleted or not
+
+13 JUNE 2020
+- Added the BUS adding feature for admin
+- Added ticket booking feature for migrant
+- Corrected the logout code (Earlier the cookie wasn't getting cleared properly in the client browser)
