@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-08">
+        <title>New Bus Addition</title>
+    </head>
+    <body>
+        <h1>Add new Buses</h1>
+        <form action="/admin/add/bus" method="POST">
+            <input type="text" name="source" value="Source"><br>
+            <input type="text" name="dest" value="Destination"><br>
+            <input type="number" name="seatAvailable" value="Seats"><br>
+            <input type="date" name="date" value="Travel Date"><br>
+            <input type="submit" value="Submit">
+        </form>
+        <%if(locals.message){%>
+            <div class="alert alert-success" role="alert">
+                <%=message.info%>
+            </div>
+            <%=removeMessage();%>
+        <%}%>
+    </body>
+</html>

@@ -83,6 +83,7 @@ exports.login = (req,res)=>{
                         if(status == 'Admin'){
                             // Admin
                             req.session.user = data.uid;
+                            req.session.loggedIn = true;
                             console.log('User logged in');
                             res.render('adminDataView');
                         }else{
@@ -126,7 +127,7 @@ exports.login = (req,res)=>{
 }
 
 exports.session_Checker = (req,res,next)=>{
-    if(req.session.user && req.cookie.user_key){
+    if(req.session.loggedIn && req.cookie.user_key){
         res.redirect('/user/dashboard');
     }else{
         next();
@@ -134,12 +135,8 @@ exports.session_Checker = (req,res,next)=>{
 }
 
 exports.logout = (req,res)=>{
-    if(req.session.user && req.cookies.user_key){
-        res.clearCookie('user_key');
-        req.flash('info','You have been logged out');
-        res.locals.message = req.flash();
-        res.render('login');
-    }else{
-        res.redirect('/login');
-    }
+    req.session.loggedIn = false;
+    req.session.destroy();
+    res.clearCookie('user_key');
+    res.redirect('/');
 }

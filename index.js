@@ -11,11 +11,11 @@ require('dotenv/config');
 const SessionStore = new session.MemoryStore;
 app.use(session({
     cookie: {maxAge: 60000},
-    saveUninitialized: true,
+    saveUninitialized: false,
     key:'user_key',
     secret: process.env.SESSION_SECRET,
     store: SessionStore,
-    resave: true
+    resave: false
 }));
 app.use(logger('dev'));    // for logs
 app.use(express.json());   // Parsing the json 
@@ -40,8 +40,13 @@ app.use((req,res,next)=>{  // for cases when the cookie remains in the user brow
 
 //Routes
 
-const user_auth = require('./src/user/login-signup/index');
-app.use('/user',user_auth);
+const userAuth = require('./src/user/login-signup/index');
+const adminUser = require('./src/user/admin/index');
+const migrantUser = require('./src/user/migrant/index');
+
+app.use('/user',userAuth);
+app.use('/admin',adminUser);
+app.use('/migrant',migrantUser);
 
 app.get('/',(req,res)=>{
     res.render('home');
