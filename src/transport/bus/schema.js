@@ -5,7 +5,7 @@ const busSchema = new mongoose.Schema({
     source: {type: String,required: true},
     destination: {type: String,required: true},
     seatAvailable: {type: Number,required: true},
-    passengerList: [{type: mongoose.Schema.Types.ObjectId,ref: 'userSchema'}],
+    passengerList: [{type: String,unique: true}],
     travelDate: {type: Date}
 });
 

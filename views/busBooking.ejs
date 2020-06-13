@@ -16,5 +16,8 @@
         <form action="/user/logout" method="GET">
             <input type="submit" value="LOGOUT">
         </form>
+        <%if(locals.message){%>
+            <p><%=message.info%></p>
+        <%}%>
     </body>
 </html>
