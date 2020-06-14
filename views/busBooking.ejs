@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>You have been successfully logged in as Migrant</h1>
-        <form action="/migrant/bookTickets" method="POST">
+        <form action="/migrant/busInfo" method="POST">
             <input type="text" name="source" value="Source"><br>
             <input type="text" name="destination" value="Destination"><br>
             <input type="date" name="travelDate" value="Travel Date"><br>
@@ -17,7 +17,13 @@
             <input type="submit" value="LOGOUT">
         </form>
         <%if(locals.message){%>
-            <p><%=message.info%></p>
+            <%if(message.success){%>
+                <!--Display the bus info and the book button-->
+                <p><%=message.success%></p>
+            <%}%>
+            <%if(message.failure){%>
+                <p><%=message.failure%></p>
+            <%}%>
         <%}%>
     </body>
 </html>
