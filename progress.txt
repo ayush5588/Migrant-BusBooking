@@ -16,3 +16,7 @@
 - Added the BUS adding feature for admin
 - Added ticket booking feature for migrant
 - Corrected the logout code (Earlier the cookie wasn't getting cleared properly in the client browser)
+
+15 JUNE 2020
+- Updated the code to let the user book only single ticket
+- Made sure that when the seat availability reaches 0, the booking feature is disabled

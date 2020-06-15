@@ -22,7 +22,6 @@ app.use(express.json());   // Parsing the json
 app.use(CookieParser());   // cookie parser
 app.use(express.urlencoded({extended: true}));  // allows to post nested object eg. {person: {name: 'ayush'}}
 app.use(flash());
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine','ejs');  // setting the view engine to ejs
 
 app.use((req,res,next)=>{  // for removing the flash message after displaying it. 

@@ -9,10 +9,10 @@ exports.getBusInfo = (req,res)=>{
     busSchema.findOne({source: source,destination: dest,travelDate: travelDate}).then((busData)=>{
         if(busData){
             const obj = {};
-            const arr = [];
+            //const arr = [];
             obj.busUid = busData[0].uid;
             obj.seatLeft = busData[0].seatAvailable;
-            arr.push(obj);
+            //arr.push(obj);
             res.render('busBooking',{obj:obj});
         }else{
             req.flash('failure','For the given parameters bus does not exist');
